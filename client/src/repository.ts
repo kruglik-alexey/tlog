@@ -1,6 +1,6 @@
 import { WeightRecord, WeightScale } from "./records";
 import data from "./wl";
-import { uniqueId } from "lodash-es";
+import * as moment from 'moment';
 
 const dateRe = /(\d*)\.(\d*)\.(\d*) (\d*):(\d*)/;
 function parseDate(str: string) {
@@ -11,9 +11,8 @@ function parseDate(str: string) {
 export function loadWeightLog() : Promise<WeightRecord[]> {
     return new Promise(r => {
         r(data.map(d => ({
-            id: uniqueId(),
-            date: parseDate(d.date),
-            dateCreated: parseDate(d.date),
+            date: moment(parseDate(d.date)),
+            dateCreated: moment(parseDate(d.date)),
             weight: d.weight,
             scale: WeightScale.Kg,
             bf: d.bf,

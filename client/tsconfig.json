@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+        "noEmitOnError": true,
+        "jsx": "react",
+        "lib": ["es2018", "dom", "dom.iterable"]
+    }
+}

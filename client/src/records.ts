@@ -1,8 +1,9 @@
+import { Moment } from 'moment';
+
 interface Record {
-    id: string,
-    dateCreated: Date,
-    date: Date,
-    note: string
+    dateCreated: Moment,
+    date: Moment,
+    note?: string
 }
 
 export enum WeightScale { Kg, Lbs }
@@ -10,6 +11,6 @@ export enum WeightScale { Kg, Lbs }
 export interface WeightRecord extends Record {
     weight: number,
     scale: WeightScale,
-    source: string,
-    bf: number
+    bf?: number,
+    source?: string
 }
