@@ -1,23 +1,28 @@
-import { WeightRecord, WeightScale } from "./records";
-import data from "./wl";
+import { WeightRecord } from "./records";
 import * as moment from 'moment';
 
-const dateRe = /(\d*)\.(\d*)\.(\d*) (\d*):(\d*)/;
-function parseDate(str: string) {
-    const match = str.match(dateRe);
-    return new Date(2018, parseInt(match[2]) - 1, parseInt(match[1]), parseInt(match[4]), parseInt(match[5]));
+const baseUrl = 'http://localhost:3000';
+
+export async function loadWeightLog() : Promise<WeightRecord[]> {
+    const response = await fetch(baseUrl + '/data');
+    const data = await response.json();
+    return data.weightLog.map(d => ({
+        dateCreated: moment(d.dateCreated),
+        date: moment(d.date),
+        weight: d.weight,
+        scale: d.scale,
+        bf: d.bf,
+        source: d.source,
+        note: d.note
+    }));
 }
 
-export function loadWeightLog() : Promise<WeightRecord[]> {
-    return new Promise(r => {
-        r(data.map(d => ({
-            date: moment(parseDate(d.date)),
-            dateCreated: moment(parseDate(d.date)),
-            weight: d.weight,
-            scale: WeightScale.Kg,
-            bf: d.bf,
-            source: null,
-            note: null
-        } as WeightRecord)));
+export async function addWeightRecord(record: WeightRecord) {
+    await fetch(baseUrl + '/weightLog', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(record)
     });
 }

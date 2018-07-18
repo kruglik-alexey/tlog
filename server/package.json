@@ -7,10 +7,12 @@
     "r": "tsc && node ./dist/index.js"
   },
   "dependencies": {
+    "cors": "^2.8.4",
     "express": "^4.16.3",
     "lowdb": "^1.0.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.4",
     "@types/es6-shim": "^0.31.37",
     "@types/express": "^4.16.0",
     "@types/lowdb": "^1.0.4",

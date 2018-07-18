@@ -2,6 +2,5 @@
 /client/.cache/
 /client/node_modules
 
-/server/db.json
 /server/dist
 /server/node_modules

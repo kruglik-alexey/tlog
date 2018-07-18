@@ -1,7 +1,7 @@
 import { FetchStatus } from "./fetchStatus";
 import { WeightRecord } from "./records";
 import { WeightLogState } from "./state";
-import { loadWeightLog } from "./repository";
+import { loadWeightLog, addWeightRecord } from "./repository";
 
 interface FetchedAction {
     type: "WL_FETCHED"
@@ -24,7 +24,10 @@ export const fetch = () => dispatch => {
     loadWeightLog().then(rs => dispatch(fetched(rs)));
 }
 export const fetched = (records: WeightRecord[]) => ({type: "WL_FETCHED", records} as FetchedAction);
-export const add = (record: WeightRecord) => ({type: "WL_ADD", record} as AddAction);
+export const add = (record: WeightRecord) => async dispatch => {
+    await addWeightRecord(record);
+    dispatch(({type: "WL_ADD", record} as AddAction));
+};
 
 export function weightLogReducer(
     state : WeightLogState = {fetched: FetchStatus.No, records: []},

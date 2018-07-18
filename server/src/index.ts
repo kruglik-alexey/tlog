@@ -2,21 +2,27 @@ import * as low from 'lowdb';
 import * as FileAsync from 'lowdb/adapters/FileAsync';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
 
 async function run() {
     console.log('Starting');
 
     const app = express();
     app.use(bodyParser.json());
+    app.use(cors({
+        origin: (origin, callback) => callback(null, true)
+    }));
 
     const adapter = new FileAsync('./db.json');
     const db = await low(adapter);
 
     await db.defaults({ weightLog: [] }).write();
 
-    app.get('/weightlog', (req, res) => {
-        const post = db.get('weightLog');
-        res.send(post);
+    app.options('*', cors());
+
+    app.get('/data', (req, res) => {
+        const data = db.getState();
+        res.send(data);
     });
 
     app.post('/weightlog', async (req, res) => {
