@@ -1,6 +1,7 @@
 import "react-table/react-table.css";
 import 'react-datepicker/dist/react-datepicker.min.css';
 import "bootstrap/dist/css/bootstrap.min.css"
+import 'react-contexify/dist/ReactContexify.min.css';
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { createLogger } from 'redux-logger'
 import thunk from "redux-thunk";

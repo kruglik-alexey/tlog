@@ -6,11 +6,22 @@ import { State } from "./state";
 import { fetch } from "./weightLogReducer";
 import ReactTable from "react-table";
 import { Moment } from "moment";
+import { ContextMenu, Item, ContextMenuProvider } from 'react-contexify';
 
 interface WeightLogProps {
     fetched: FetchStatus,
     records: ReadonlyArray<WeightRecord>,
     dispatch?
+}
+
+const contextMenuId = "menu";
+
+const SimpleCell = props => {
+    return (
+        <ContextMenuProvider id={contextMenuId} data={props.row}>
+            {props.value}
+        </ContextMenuProvider>
+    );
 }
 
 class WeightLog extends React.PureComponent<WeightLogProps> {
@@ -20,34 +31,47 @@ class WeightLog extends React.PureComponent<WeightLogProps> {
         }
     }
 
+    handleDeleteMenu = ({dataFromProvider}) => {
+        console.log(dataFromProvider);
+    }
+
     render() {
-        return <ReactTable
-            className="-striped -highlight"
-            data={this.props.records as WeightRecord[]}
-            columns={[
-                {Header: 'Date', accessor: 'date', Cell: props => {
-                    const date : Moment = props.value;
-                    return (
-                        <span>
-                            {date.format('L')}
-                            <small style={{paddingLeft: '5px'}}>{date.format('LT')}</small>
-                        </span>);
-                }},
-                {Header: 'Weight', accessor: 'weight'},
-                {Header: 'BF', accessor: 'bf'},
-                //{Header: 'Source', accessor: 'source'},
-                {Header: 'Note', accessor: 'note', sortable: false}
-            ]}
-            loading={this.props.fetched !== FetchStatus.Fetched}
-            defaultPageSize={30}
-            pageSizeOptions={[30, 60, 90, 365]}
-            defaultSorted={[
-                {
-                  id: 'date',
-                  desc: true
-                }
-            ]}
-        />;
+        return (
+            <div>
+                <ReactTable
+                    className="-striped -highlight"
+                    data={this.props.records as WeightRecord[]}
+                    columns={[
+                        {Header: 'Date', accessor: 'date', Cell: props => {
+                            const date : Moment = props.value;
+                            return (
+                                <ContextMenuProvider id={contextMenuId} data={props.row}>
+                                    <span>
+                                        {date.format('L')}
+                                        <small style={{paddingLeft: '5px'}}>{date.format('LT')}</small>
+                                    </span>
+                                </ContextMenuProvider>
+                            );
+                        }},
+                        {Header: 'Weight', accessor: 'weight', Cell: SimpleCell},
+                        {Header: 'BF', accessor: 'bf', Cell: SimpleCell},
+                        //{Header: 'Source', accessor: 'source'},
+                        {Header: 'Note', accessor: 'note', sortable: false, Cell: SimpleCell}
+                    ]}
+                    loading={this.props.fetched !== FetchStatus.Fetched}
+                    defaultPageSize={30}
+                    pageSizeOptions={[30, 60, 90, 365]}
+                    defaultSorted={[
+                        {
+                        id: 'date',
+                        desc: true
+                        }
+                    ]}
+                />
+                <ContextMenu id={contextMenuId}>
+                    <Item onClick={this.handleDeleteMenu}>Delete</Item>
+                </ContextMenu>
+            </div>);
     }
 }
 
