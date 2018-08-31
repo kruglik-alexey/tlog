@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import * as moment from 'moment';
 import { add } from './weightLogReducer';
 import { WeightScale } from "./records";
+import { uuid } from './uuid';
 
 interface WeightAdderState {
     date: moment.Moment,
@@ -55,6 +56,7 @@ class WeightAdder extends React.Component<{dispatch?}, WeightAdderState> {
         }
 
         this.props.dispatch(add({
+            id: uuid(),
             dateCreated: moment(),
             date: this.state.date,
             weight: parseFloat(this.state.weight),

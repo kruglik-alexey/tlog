@@ -1,6 +1,7 @@
 import { Moment } from 'moment';
 
 interface Record {
+    id: string,
     dateCreated: Moment,
     date: Moment,
     note?: string
