@@ -65,10 +65,13 @@ class WeightAdder extends React.Component<{dispatch?}, WeightAdderState> {
             note: this.state.note
         }));
 
+        const prevDate = this.state.date;
         this.setState(this.getClearState());
+        this.setState({date: prevDate.clone().add(1, 'day')});
     }
 
     validate() {
+        // TODO pressing enter execute browser validation that yells at decimal numbers in bf
         const weightInvalid = this.state.weight === '';
         this.setState({weightInvalid});
         return !weightInvalid;
