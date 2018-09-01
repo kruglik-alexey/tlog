@@ -101,9 +101,10 @@ class WeightPlot extends React.PureComponent<WeightPlotProps> {
                 }
             }]}
             layout={{
-                width: 1000,
+                width: 1200,
                 height: 500,
                 title: 'Weight Log',
+                // TODO color axes same color as corresponding series
                 yaxis: {
                     side: 'left',
                     title: 'Weight',
