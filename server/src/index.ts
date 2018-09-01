@@ -31,6 +31,12 @@ async function run() {
         res.send('ok');
     });
 
+    app.delete('/weightLog/:id', async (req, res) => {
+        console.log('Delete from weightlog');
+        await db.get('weightLog').remove({id: req.params.id}).write();
+        res.send('ok');
+    });
+
     await app.listen(3000, () => console.log('Listening on port 3000'));
 }
 

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { FetchStatus } from "./fetchStatus";
 import { WeightRecord } from "./records";
 import { State } from "./state";
-import { fetch } from "./weightLogReducer";
+import { fetch, del } from "./weightLogReducer";
 import ReactTable from "react-table";
 import { Moment } from "moment";
 import { ContextMenu, Item, ContextMenuProvider } from 'react-contexify';
@@ -18,8 +18,8 @@ const contextMenuId = "menu";
 
 const SimpleCell = props => {
     return (
-        <ContextMenuProvider id={contextMenuId} data={props.row}>
-            {props.value}
+        <ContextMenuProvider id={contextMenuId} data={props.original}>
+            {props.value || ''}
         </ContextMenuProvider>
     );
 }
@@ -33,6 +33,7 @@ class WeightLog extends React.PureComponent<WeightLogProps> {
 
     handleDeleteMenu = ({dataFromProvider}) => {
         console.log(dataFromProvider);
+        this.props.dispatch(del(dataFromProvider.id));
     }
 
     render() {

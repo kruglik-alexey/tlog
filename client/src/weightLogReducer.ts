@@ -1,7 +1,7 @@
 import { FetchStatus } from "./fetchStatus";
 import { WeightRecord } from "./records";
 import { WeightLogState } from "./state";
-import { loadWeightLog, addWeightRecord } from "./repository";
+import { loadWeightLog, addWeightRecord, deleteWeightRecord } from "./repository";
 
 interface FetchedAction {
     type: "WL_FETCHED"
@@ -17,6 +17,11 @@ interface AddAction {
     record: WeightRecord
 }
 
+interface DeleteAction {
+    type: "WL_DELETE",
+    id: string
+}
+
 const _fetch = () => ({type: "WL_FETCH"} as FetchAction);
 
 export const fetch = () => dispatch => {
@@ -29,9 +34,14 @@ export const add = (record: WeightRecord) => async dispatch => {
     dispatch(({type: "WL_ADD", record} as AddAction));
 };
 
+export const del = (id: string) => async dispatch => {
+    await deleteWeightRecord(id);
+    dispatch({type: "WL_DELETE", id});
+}
+
 export function weightLogReducer(
     state : WeightLogState = {fetched: FetchStatus.No, records: []},
-    action : FetchAction | FetchedAction | AddAction) : WeightLogState {
+    action : FetchAction | FetchedAction | AddAction | DeleteAction) : WeightLogState {
     switch (action.type) {
         case "WL_FETCH": {
             return {
@@ -51,6 +61,12 @@ export function weightLogReducer(
             return {
                 ...state,
                 records: state.records.concat(action.record)
+            }
+        }
+        case "WL_DELETE": {
+            return {
+                ...state,
+                records: state.records.filter(r => r.id !== action.id)
             }
         }
         default: return state;
