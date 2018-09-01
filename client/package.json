@@ -12,6 +12,7 @@
     "@types/react": "16.4.6",
     "@types/react-datepicker": "^1.1.5",
     "@types/react-dom": "^16.0.6",
+    "@types/react-plotly.js": "^2.2.1",
     "@types/react-redux": "6.0.4",
     "@types/react-table": "^6.7.11",
     "@types/reactstrap": "^6.0.0",
@@ -24,15 +25,18 @@
     "bootstrap": "4",
     "lodash-es": "4.17.10",
     "moment": "^2.22.2",
+    "plotly.js-basic-dist": "^1.40.1",
     "react": "16.4.1",
     "react-contexify": "^3.0.3",
     "react-datepicker": "^1.5.0",
     "react-dom": "16.4.1",
+    "react-plotly.js": "^2.2.0",
     "react-redux": "5.0.7",
     "react-table": "6.8.6",
     "reactstrap": "^6.3.0",
     "redux": "4.0.0",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "regression": "^2.0.1"
   }
 }
