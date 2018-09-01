@@ -32,8 +32,8 @@ class WeightLog extends React.PureComponent<WeightLogProps> {
     }
 
     handleDeleteMenu = ({dataFromProvider}) => {
-        console.log(dataFromProvider);
-        this.props.dispatch(del(dataFromProvider.id));
+        // TODO
+        this.props.dispatch(del(dataFromProvider._original.id));
     }
 
     render() {
