@@ -6,11 +6,12 @@ import * as Plotly from "plotly.js-basic-dist";
 import * as createPlotlyComponent from 'react-plotly.js/factory';
 import { min, max } from "lodash-es";
 import * as regression from 'regression';
+import * as moment from 'moment';
 
 const Plot = createPlotlyComponent(Plotly);
 
 interface PlotRecord {
-    date: Date,
+    date: moment.Moment,
     value: number
 }
 
@@ -38,10 +39,13 @@ interface Trendline {
 }
 
 function trendline(records: PlotRecord[]): Trendline {
-    const values = records.map((r, i) => [i, r.value]);
+    const firstDate = min(records.map(r => r.date));
+    // x values should be on the scale of y values or else regression will produce just horizontal line
+    // therefore use of days diff as x values
+    const values = records.map(r => [r.date.diff(firstDate, 'days'), r.value]);
     const trend = regression.linear(values).points;
     return {
-        x: trend.map(i => records[i[0]].date),
+        x: trend.map(i => firstDate.clone().add(i[0], 'days').toDate()),
         y: trend.map(i => i[1])
     }
 }
@@ -59,7 +63,7 @@ class WeightPlot extends React.PureComponent<WeightPlotProps> {
 
         var weightPlot = <Plot data={[
             {
-                x: this.props.weightSeries.map(r => r.date),
+                x: this.props.weightSeries.map(r => r.date.toDate()),
                 y: this.props.weightSeries.map(r => r.value),
                 type: 'scatter',
                 name: 'Weight',
@@ -77,7 +81,7 @@ class WeightPlot extends React.PureComponent<WeightPlotProps> {
                 }
             },
             {
-                x: this.props.bfSeries.map(r => r.date),
+                x: this.props.bfSeries.map(r => r.date.toDate()),
                 y: this.props.bfSeries.map(r => r.value),
                 type: 'scatter',
                 name: 'Body Fat %',
@@ -119,11 +123,11 @@ class WeightPlot extends React.PureComponent<WeightPlotProps> {
 
 export default connect((state: State) : WeightPlotProps => {
     var weightSeries = state.weightLog.records.map(r => ({
-        date: r.date.toDate(),
+        date: r.date,
         value: r.weight
     }));
     var bfSeries = state.weightLog.records.filter(r => r.bf).map(r => ({
-        date: r.date.toDate(),
+        date: r.date,
         value: r.bf
     }));
     return {
