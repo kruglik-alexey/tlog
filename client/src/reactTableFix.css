@@ -1,0 +1,7 @@
+.ReactTable .pagination-bottom {
+    height: 45px;
+}
+
+.ReactTable .pagination-bottom .-pagination {
+    padding: 0px;
+}
