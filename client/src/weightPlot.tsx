@@ -104,17 +104,23 @@ class WeightPlot extends React.PureComponent<WeightPlotProps> {
                 width: 1200,
                 height: 500,
                 title: 'Weight Log',
-                // TODO color axes same color as corresponding series
+                // colors are from https://github.com/plotly/plotly.js/blob/master/src/components/color/attributes.js
                 yaxis: {
                     side: 'left',
                     title: 'Weight',
-                    range: weightRange
+                    range: weightRange,
+                    titlefont: {
+                        color: '#1f77b4'
+                    }
                 },
                 yaxis2: {
                     side: 'right',
                     overlaying: 'y',
                     title: 'Body Fat %',
-                    range: bfRange
+                    range: bfRange,
+                    titlefont: {
+                        color: '#2ca02c'
+                    }
                 },
                 showlegend: false
             }}/>;
