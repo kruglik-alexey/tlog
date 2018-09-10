@@ -7,6 +7,7 @@ import * as createPlotlyComponent from 'react-plotly.js/factory';
 import { min, max } from "lodash-es";
 import * as regression from 'regression';
 import * as moment from 'moment';
+import WeightPlotRangeControl, { WeightPlotRange } from './weightPlotRange';
 
 const Plot = createPlotlyComponent(Plotly);
 
@@ -51,6 +52,10 @@ function trendline(records: PlotRecord[]): Trendline {
 }
 
 class WeightPlot extends React.PureComponent<WeightPlotProps> {
+    handleRangeChange(range: WeightPlotRange) {
+        console.log(range);
+    }
+
     render() {
         if (this.props.fetchStatus !== FetchStatus.Fetched) {
             return <span />;
@@ -124,7 +129,15 @@ class WeightPlot extends React.PureComponent<WeightPlotProps> {
                 },
                 showlegend: false
             }}/>;
-        return <div>{weightPlot}</div>;
+
+        return (
+            <div>
+                <div style={{margin: "15px"}}>
+                    <WeightPlotRangeControl rangeChangeHandler={this.handleRangeChange} />
+                </div>
+                {weightPlot}
+            </div>
+        );
     }
 }
 

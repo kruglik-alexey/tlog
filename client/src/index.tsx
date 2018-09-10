@@ -2,6 +2,7 @@ import "react-table/react-table.css";
 import 'react-datepicker/dist/react-datepicker.min.css';
 import "bootstrap/dist/css/bootstrap.min.css"
 import 'react-contexify/dist/ReactContexify.min.css';
+import 'rc-slider/assets/index.css';
 import './reactTableFix.css';
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { createLogger } from 'redux-logger'
